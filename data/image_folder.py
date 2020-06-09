@@ -13,7 +13,7 @@ import os.path
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG', '.pgm', '.PGM',
-    '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP', '.tiff', 
+    '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP', '.tiff',
     '.txt', '.json'
 ]
 
@@ -55,7 +55,7 @@ def check_path_valid(A_paths, B_paths):
         assert(len(a) == len(b))
 
 def default_loader(path):
-    return Image.open(path).convert('RGB')
+    return Image.open(path).convert('RGBA')
 
 
 class ImageFolder(data.Dataset):

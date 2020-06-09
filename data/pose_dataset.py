@@ -11,27 +11,27 @@ from data.keypoint2img import read_keypoints
 class PoseDataset(BaseDataset):
     def initialize(self, opt):
         self.opt = opt
-        self.root = opt.dataroot 
+        self.root = opt.dataroot
 
         self.dir_dp = os.path.join(opt.dataroot, opt.phase + '_densepose')
         self.dir_op = os.path.join(opt.dataroot, opt.phase + '_openpose')
-        self.dir_img = os.path.join(opt.dataroot, opt.phase + '_img')                
+        self.dir_img = os.path.join(opt.dataroot, opt.phase + '_img')
         self.img_paths = sorted(make_grouped_dataset(self.dir_img))
         if not opt.openpose_only:
             self.dp_paths = sorted(make_grouped_dataset(self.dir_dp))
             check_path_valid(self.dp_paths, self.img_paths)
         if not opt.densepose_only:
-            self.op_paths = sorted(make_grouped_dataset(self.dir_op))                
+            self.op_paths = sorted(make_grouped_dataset(self.dir_op))
             check_path_valid(self.op_paths, self.img_paths)
 
         self.init_frame_idx(self.img_paths)
 
     def __getitem__(self, index):
         A, B, _, seq_idx = self.update_frame_idx(self.img_paths, index)
-        img_paths = self.img_paths[seq_idx]        
+        img_paths = self.img_paths[seq_idx]
         n_frames_total, start_idx, t_step = get_video_params(self.opt, self.n_frames_total, len(img_paths), self.frame_idx)
-        
-        img = Image.open(img_paths[start_idx]).convert('RGB')     
+
+        img = Image.open(img_paths[start_idx]).convert('RGBA')
         size = img.size
         params = get_img_params(self.opt, size)
 
@@ -53,14 +53,14 @@ class PoseDataset(BaseDataset):
             else:
                 Ai = torch.cat([Di, Oi])
             Bi = self.get_image(img_path, size, params, input_type='img')
-            
+
 #            Ai, Bi = self.crop(Ai), self.crop(Bi) # only crop the central half region to save time
             A = concat_frame(A, Ai, n_frames_total)
             B = concat_frame(B, Bi, n_frames_total)
-        
+
         if not self.opt.isTrain:
             self.A, self.B = A, B
-            self.frame_idx += 1            
+            self.frame_idx += 1
         change_seq = False if self.opt.isTrain else self.change_seq
         return_list = {'A': A, 'B': B, 'inst': 0, 'A_path': img_path, 'change_seq': change_seq}
 
@@ -69,18 +69,18 @@ class PoseDataset(BaseDataset):
     def get_image(self, A_path, size, params, input_type):
         if input_type != 'openpose':
             A_img = Image.open(A_path).convert('RGB')
-        else:            
+        else:
             random_drop_prob = self.opt.random_drop_prob if self.opt.isTrain else 0
-            A_img = Image.fromarray(read_keypoints(A_path, size, random_drop_prob, self.opt.remove_face_labels, self.opt.basic_point_only))            
+            A_img = Image.fromarray(read_keypoints(A_path, size, random_drop_prob, self.opt.remove_face_labels, self.opt.basic_point_only))
 
         if input_type == 'densepose' and self.opt.isTrain:
             # randomly remove labels
             A_np = np.array(A_img)
-            part_labels = A_np[:,:,2]            
+            part_labels = A_np[:,:,2]
             for part_id in range(1, 25):
                 if (np.random.rand() < self.opt.random_drop_prob):
                     A_np[(part_labels == part_id), :] = 0
-            if self.opt.remove_face_labels:            
+            if self.opt.remove_face_labels:
                 A_np[(part_labels == 23) | (part_labels == 24), :] = 0
             A_img = Image.fromarray(A_np)
 
@@ -96,42 +96,42 @@ class PoseDataset(BaseDataset):
         x_cen = w // 2
         bs = int(w * 0.25) // base * base
         return Ai[:,:,(x_cen-bs):(x_cen+bs)]
-               
+
     def normalize_pose(self, A_img, target_yc, target_len, first=False):
         w, h = A_img.size
-        A_np = np.array(A_img)  
+        A_np = np.array(A_img)
 
-        if first == True:          
-            part_labels = A_np[:,:,2]            
+        if first == True:
+            part_labels = A_np[:,:,2]
             part_coords = np.nonzero((part_labels == 1) | (part_labels == 2))
             y, x = part_coords[0], part_coords[1]
 
-            ys, ye = y.min(), y.max()                    
+            ys, ye = y.min(), y.max()
             min_i, max_i = np.argmin(y), np.argmax(y)
             v_min = A_np[y[min_i], x[min_i], 1] / 255
             v_max = A_np[y[max_i], x[max_i], 1] / 255
             ylen = (ye-ys) / (v_max-v_min)
-            yc = (0.5-v_min) / (v_max-v_min) * (ye-ys) + ys            
-            
+            yc = (0.5-v_min) / (v_max-v_min) * (ye-ys) + ys
+
             ratio = target_len / ylen
             offset_y = int(yc - (target_yc / ratio))
-            offset_x = int(w * (1 - 1/ratio) / 2)        
+            offset_x = int(w * (1 - 1/ratio) / 2)
 
             padding = int(max(0, max(-offset_y, int(offset_y + h/ratio) - h)))
             padding = int(max(padding, max(-offset_x, int(offset_x + w/ratio) - w)))
             offset_y += padding
-            offset_x += padding            
+            offset_x += padding
             self.offset_y, self.offset_x = offset_y, offset_x
             self.ratio, self.padding = ratio, padding
 
         p = self.padding
         A_np = np.pad(A_np, ((p,p),(p,p),(0,0)), 'constant', constant_values=0)
-        A_np = A_np[self.offset_y:int(self.offset_y + h/self.ratio), self.offset_x:int(self.offset_x + w/self.ratio):, :]        
+        A_np = A_np[self.offset_y:int(self.offset_y + h/self.ratio), self.offset_x:int(self.offset_x + w/self.ratio):, :]
         A_img = Image.fromarray(A_np)
         A_img = A_img.resize((w, h))
         return A_img
 
-    def __len__(self):        
+    def __len__(self):
         return sum(self.frames_count)
 
     def name(self):

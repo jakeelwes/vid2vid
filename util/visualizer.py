@@ -1,11 +1,11 @@
-### Copyright (C) 2017 NVIDIA Corporation. All rights reserved. 
+### Copyright (C) 2017 NVIDIA Corporation. All rights reserved.
 ### Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 import numpy as np
 import os
 import time
 from . import util
 from . import html
-import scipy.misc 
+import scipy.misc
 try:
     from StringIO import StringIO  # Python 2.7
 except ImportError:
@@ -58,17 +58,17 @@ class Visualizer():
             for label, image_numpy in visuals.items():
                 if isinstance(image_numpy, list):
                     for i in range(len(image_numpy)):
-                        img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%d.jpg' % (epoch, label, i))
+                        img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%d.png' % (epoch, label, i))
                         util.save_image(image_numpy[i], img_path)
-                        img_path = os.path.join(self.img_dir, '%s_epoch%.3d_%d_%s.jpg' % (label, epoch, i, time.time()))
+                        img_path = os.path.join(self.img_dir, '%s_epoch%.3d_%d_%s.png' % (label, epoch, i, time.time()))
 #                        img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%d_%s.jpg' % (epoch, label, i, time.time()))
                         util.save_image(image_numpy[i], img_path)
                 else:
 
 #PoseDataset.__getitem__(0,idx)["A_path"] or time.time()
-                    img_path = os.path.join(self.img_dir, 'epoch%.3d_%s.jpg' % (epoch, label))
+                    img_path = os.path.join(self.img_dir, 'epoch%.3d_%s.png' % (epoch, label))
                     util.save_image(image_numpy, img_path)
-                    img_path = os.path.join(self.img_dir, '%s_epoch%.3d_%s.jpg' % (label, epoch, time.time()))
+                    img_path = os.path.join(self.img_dir, '%s_epoch%.3d_%s.png' % (label, epoch, time.time()))
 #                   img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%s.jpg' % (epoch, label, time.time())) #time.time
                     util.save_image(image_numpy, img_path)
 
@@ -83,12 +83,12 @@ class Visualizer():
                 for label, image_numpy in visuals.items():
                     if isinstance(image_numpy, list):
                         for i in range(len(image_numpy)):
-                            img_path = 'epoch%.3d_%s_%d.jpg' % (n, label, i)
+                            img_path = 'epoch%.3d_%s_%d.png' % (n, label, i)
                             ims.append(img_path)
                             txts.append(label+str(i))
                             links.append(img_path)
                     else:
-                        img_path = 'epoch%.3d_%s.jpg' % (n, label)
+                        img_path = 'epoch%.3d_%s.png' % (n, label)
                         ims.append(img_path)
                         txts.append(label)
                         links.append(img_path)
@@ -103,7 +103,7 @@ class Visualizer():
     # errors: dictionary of error labels and values
     def plot_current_errors(self, errors, step):
         if self.tf_log:
-            for tag, value in errors.items():            
+            for tag, value in errors.items():
                 summary = self.tf.Summary(value=[self.tf.Summary.Value(tag=tag, simple_value=value)])
                 self.writer.add_summary(summary, step)
 
@@ -119,16 +119,16 @@ class Visualizer():
             log_file.write('%s\n' % message)
 
     # save image to the disk
-    def save_images(self, image_dir, visuals, image_path, webpage=None):        
+    def save_images(self, image_dir, visuals, image_path, webpage=None):
         dirname = os.path.basename(os.path.dirname(image_path[0]))
         image_dir = os.path.join(image_dir, dirname)
         util.mkdir(image_dir)
         name = os.path.basename(image_path[0])
-        name = os.path.splitext(name)[0]        
+        name = os.path.splitext(name)[0]
 
         if webpage is not None:
             webpage.add_header(name)
-            ims, txts, links = [], [], []         
+            ims, txts, links = [], [], []
 
         for label, image_numpy in visuals.items():
 #            save_ext = 'png' if 'real_A' in label and self.opt.label_nc != 0 else 'jpg'
@@ -136,7 +136,7 @@ class Visualizer():
 #            save_path = os.path.join(image_dir, image_name)
 #            util.save_image(image_numpy, save_path)
             if 'fake_B' in label:
-            	image_name = '%s.jpg' % (name)
+            	image_name = '%s.png' % (name)
             	save_path = os.path.join(image_dir, image_name)
             	util.save_image(image_numpy, save_path)
 
@@ -152,4 +152,3 @@ class Visualizer():
         print(message)
         with open(self.log_name, "a") as log_file:
             log_file.write('%s\n' % message)
-
