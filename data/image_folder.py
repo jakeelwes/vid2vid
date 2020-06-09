@@ -31,6 +31,7 @@ def make_dataset(dir):
             if is_image_file(fname):
                 path = os.path.join(root, fname)
                 images.append(path)
+
     return images
 
 def make_grouped_dataset(dir):
@@ -45,6 +46,7 @@ def make_grouped_dataset(dir):
                 paths.append(os.path.join(root, f))
         if len(paths) > 0:
             images.append(paths)
+    print(len(images[0]))
     return images
 
 def check_path_valid(A_paths, B_paths):
@@ -57,7 +59,6 @@ def default_loader(path):
 
 
 class ImageFolder(data.Dataset):
-
     def __init__(self, root, transform=None, return_paths=False,
                  loader=default_loader):
         imgs = make_dataset(root)

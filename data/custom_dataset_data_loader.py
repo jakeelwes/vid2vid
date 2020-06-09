@@ -21,6 +21,8 @@ def CreateDataset(opt):
 
     print("dataset [%s] was created" % (dataset.name()))
     dataset.initialize(opt)
+#     print(dataset[500])
+    print(len(dataset))
     return dataset
 
 

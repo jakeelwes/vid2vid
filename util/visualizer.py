@@ -60,8 +60,16 @@ class Visualizer():
                     for i in range(len(image_numpy)):
                         img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%d.jpg' % (epoch, label, i))
                         util.save_image(image_numpy[i], img_path)
+                        img_path = os.path.join(self.img_dir, '%s_epoch%.3d_%d_%s.jpg' % (label, epoch, i, time.time()))
+#                        img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%d_%s.jpg' % (epoch, label, i, time.time()))
+                        util.save_image(image_numpy[i], img_path)
                 else:
+
+#PoseDataset.__getitem__(0,idx)["A_path"] or time.time()
                     img_path = os.path.join(self.img_dir, 'epoch%.3d_%s.jpg' % (epoch, label))
+                    util.save_image(image_numpy, img_path)
+                    img_path = os.path.join(self.img_dir, '%s_epoch%.3d_%s.jpg' % (label, epoch, time.time()))
+#                   img_path = os.path.join(self.img_dir, 'epoch%.3d_%s_%s.jpg' % (epoch, label, time.time())) #time.time
                     util.save_image(image_numpy, img_path)
 
             # update website
@@ -123,10 +131,15 @@ class Visualizer():
             ims, txts, links = [], [], []         
 
         for label, image_numpy in visuals.items():
-            save_ext = 'png' if 'real_A' in label and self.opt.label_nc != 0 else 'jpg'
-            image_name = '%s_%s.%s' % (label, name, save_ext)
-            save_path = os.path.join(image_dir, image_name)
-            util.save_image(image_numpy, save_path)
+#            save_ext = 'png' if 'real_A' in label and self.opt.label_nc != 0 else 'jpg'
+#            image_name = '%s_%s.%s' % (label, name, save_ext)
+#            save_path = os.path.join(image_dir, image_name)
+#            util.save_image(image_numpy, save_path)
+            if 'fake_B' in label:
+            	image_name = '%s.jpg' % (name)
+            	save_path = os.path.join(image_dir, image_name)
+            	util.save_image(image_numpy, save_path)
+
 
             if webpage is not None:
                 ims.append(image_name)

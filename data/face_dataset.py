@@ -16,7 +16,6 @@ class FaceDataset(BaseDataset):
         self.root = opt.dataroot                
         self.dir_A = os.path.join(opt.dataroot, opt.phase + '_keypoints')
         self.dir_B = os.path.join(opt.dataroot, opt.phase + '_img')
-        
         self.A_paths = sorted(make_grouped_dataset(self.dir_A))
         self.B_paths = sorted(make_grouped_dataset(self.dir_B))    
         check_path_valid(self.A_paths, self.B_paths)
@@ -44,7 +43,7 @@ class FaceDataset(BaseDataset):
         transform_scaleB = get_transform(self.opt, params)
         
         # read in images        
-        frame_range = list(range(n_frames_total)) if self.A is None else [self.opt.n_frames_G-1]        
+        frame_range = list(range(n_frames_total)) if self.A is None else [self.opt.n_frames_G-1]   
         for i in frame_range:
             A_path = A_paths[start_idx + i * t_step]
             B_path = B_paths[start_idx + i * t_step]                    
@@ -60,7 +59,7 @@ class FaceDataset(BaseDataset):
             self.frame_idx += 1
         change_seq = False if self.opt.isTrain else self.change_seq
         return_list = {'A': A, 'B': B, 'inst': I, 'A_path': A_path, 'change_seq': change_seq}
-                
+                        
         return return_list
 
     def get_image(self, A_path, transform_scaleA):
@@ -204,9 +203,9 @@ class FaceDataset(BaseDataset):
             keypoints[pts_idx] = pts
 
     def __len__(self):
-        if self.opt.isTrain:
-            return len(self.A_paths)
-        else:
+#         if self.opt.isTrain:
+#             return len(self.A_paths)
+#         else:
             return sum(self.frames_count)
 
     def name(self):

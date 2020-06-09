@@ -40,6 +40,7 @@ class BaseDataset(data.Dataset):
     def update_frame_idx(self, A_paths, index):
         if self.opt.isTrain:
             if self.opt.dataset_mode == 'pose':                
+#                seq_idx = index % len(A_paths) # randomly pick sequence to train
                 seq_idx = np.random.choice(len(A_paths), p=self.folder_prob) # randomly pick sequence to train
                 self.frame_idx = index
             else:    
@@ -106,18 +107,21 @@ def get_img_params(opt, size):
     crop_w = crop_h = 0
     if 'crop' in opt.resize_or_crop or 'scaledCrop' in opt.resize_or_crop:
         if 'crop' in opt.resize_or_crop:      # crop patches of size fineSize x fineSize
-            crop_w = crop_h = opt.fineSize
+            # crop_w = crop_h = opt.fineSize
+            crop_h = opt.fineSize
+            crop_w = opt.fineSize * 0.8888
         else:
             if 'Width' in opt.resize_or_crop: # crop patches of width fineSize
                 crop_w = opt.fineSize
                 crop_h = opt.fineSize * h // w
             else:                              # crop patches of height fineSize
-                crop_h = opt.fineSize
+                crop_h = opt.fineSize 
                 crop_w = opt.fineSize * w // h
 
         crop_w, crop_h = make_power_2(crop_w), make_power_2(crop_h)        
         x_span = (new_w - crop_w) // 2
-        crop_x = np.maximum(0, np.minimum(x_span*2, int(np.random.randn() * x_span/3 + x_span)))        
+        crop_x = 0
+#        crop_x = np.maximum(0, np.minimum(x_span*2, int(np.random.randn() * x_span/3 + x_span)))        
         crop_y = random.randint(0, np.minimum(np.maximum(0, new_h - crop_h), new_h // 8))
         #crop_x = random.randint(0, np.maximum(0, new_w - crop_w))
         #crop_y = random.randint(0, np.maximum(0, new_h - crop_h))        
