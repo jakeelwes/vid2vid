@@ -21,4 +21,8 @@ build/
 *.DS_Store
 *~
 zizi-datasets/
+zizi-show/datasets/
+zizi-show/results/
+zizi-show/vids/
+zizi-show/checkpoints/
 *.tar
