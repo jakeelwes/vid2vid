@@ -107,9 +107,9 @@ def get_img_params(opt, size):
     crop_w = crop_h = 0
     if 'crop' in opt.resize_or_crop or 'scaledCrop' in opt.resize_or_crop:
         if 'crop' in opt.resize_or_crop:      # crop patches of size fineSize x fineSize
-            # crop_w = crop_h = opt.fineSize
             crop_h = opt.fineSize
-            crop_w = opt.fineSize * 0.8888
+            crop_w = opt.fineSize
+#             crop_w = opt.fineSize * 0.8888
         else:
             if 'Width' in opt.resize_or_crop: # crop patches of width fineSize
                 crop_w = opt.fineSize
