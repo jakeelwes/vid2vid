@@ -27,3 +27,6 @@ WORKDIR /vid2vid
 #WARNING: we had an instance where these scripts needed to be re-run after the docke$
 RUN python scripts/download_flownet2.py
 RUN python scripts/download_models_flownet2.py
+
+RUN apt-get install curl -y
+RUN curl https://download.pytorch.org/models/vgg19-dcbb9e9d.pth --create-dirs -o /root/.cache/torch/checkpoints/vgg19-dcbb9e9d.pth

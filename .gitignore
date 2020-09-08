@@ -20,10 +20,10 @@ build/
 */**/*.dylib*
 *.DS_Store
 *~
-zizi-datasets/
-zizi-show/datasets/
-zizi-show/results/
-zizi-show/vids/
-zizi-show/checkpoints/
+zizi-data/datasets/acts/
+zizi-data/datasets/looks/
+zizi-data/results/
+zizi-data/vids/
+zizi-data/checkpoints/
 *.tar
-zizi-data/
+*vgg19-dcbb9e9d.pth
