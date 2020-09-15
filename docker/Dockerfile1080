@@ -10,8 +10,7 @@ RUN apt-get install nano
 
 #Torch and dependencies:
 #RUN pip install http://download.pytorch.org/whl/cu80/torch-0.4.0-cp35-cp35m-linux_x$
-#RUN pip install torch==1.1.0
-RUN pip install https://download.pytorch.org/whl/cu90/torch-1.0.0-cp35-cp35m-linux_x86_64.whl
+RUN pip install torch==1.1.0
 RUN pip install torchvision==0.3.0 cffi==1.12.3 tensorboardX==1.8
 RUN pip install tqdm scipy==1.1.0 scikit-image==0.15.0 colorama==0.3.7
 RUN pip install setproctitle pytz ipython
