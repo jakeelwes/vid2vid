@@ -16,7 +16,7 @@ fi
 
 echo $folder "training"
 
-docker run --gpus all --shm-size 16G --volume=/mnt/s3:/vid2vid/zizi-data --volume=$PWD/zizi-scripts:/vid2vid/zizi-scripts jakeelwes/zz:latest \
+#docker run --gpus all --shm-size 16G --volume=/mnt/s3:/vid2vid/zizi-data --volume=$PWD/zizi-scripts:/vid2vid/zizi-scripts jakeelwes/zz:latest \
     python train.py --name $(basename $folder) \
     --dataroot $folder --checkpoints_dir zizi-data/checkpoints/ --dataset_mode pose \
     --input_nc 6 --n_scales_spatial 1 --num_D 2 --ngf 29 --ndf 25 \
