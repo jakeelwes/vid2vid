@@ -11,4 +11,4 @@ pip install dominate==2.3.5 requests opencv-python==4.1.0.25 tensorflow==1.14.0
 python scripts/download_flownet2.py
 python scripts/download_models_flownet2.py
 sudo apt-get install curl -y
-curl https://download.pytorch.org/models/vgg19-dcbb9e9d.pth --create-dirs -o /root/.cache/torch/checkpoints/vgg19-dcbb9e9d.pth
+sudo curl https://download.pytorch.org/models/vgg19-dcbb9e9d.pth --create-dirs -o /root/.cache/torch/checkpoints/vgg19-dcbb9e9d.pth
