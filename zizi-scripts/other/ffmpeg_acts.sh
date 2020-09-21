@@ -9,8 +9,8 @@ name="$((basename $folder) | head -n1 | cut -d "-" -f1)"-"$(basename $(dirname $
 cp $folder/000003.png $folder/000001.png
 cp $folder/000003.png $folder/000002.png
 
-ffmpeg -y -an -i $folder/%06d.png -i Output/songs/$song -map 0:v -map 1:a -c:v copy -shortest -crf 16 Output/full/$name.mp4
-ffmpeg -y -an -i $folder/%06d.png -b 4000k -vcodec libx264 -pix_fmt yuv420p -strict -2 Output/web/$name.mp4
+ffmpeg -y -an -i $folder/%06d.png -i Output/songs/$song -crf 10 -vcodec libx264 -pix_fmt yuv420p Output/full/$name.mp4
+#ffmpeg -y -an -i $folder/%06d.png -b 4000k -vcodec libx264 -pix_fmt yuv420p -strict -2 Output/web/$name.mp4
 
 
 
