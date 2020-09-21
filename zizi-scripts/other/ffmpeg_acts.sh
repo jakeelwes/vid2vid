@@ -4,7 +4,7 @@ folder=${1?Error: no dir given (ie folder=lilly-full/fiveyears-ruby-full)}
 #folder=lilly-full/fiveyears-ruby-full
 
 
-name="$((basename $folder) | head -n1 | cut -d "-" -f1)"-"$(dirname $folder)"
+name="$((basename $folder) | head -n1 | cut -d "-" -f1)"-"$(basename $(dirname $folder))"
 
 
 cp $folder/000003.png $folder/000001.png
