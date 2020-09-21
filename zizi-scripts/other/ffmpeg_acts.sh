@@ -1,17 +1,16 @@
 #!/bin/bash
 
-folder=${1?Error: no dir given (ie folder=lilly-full/fiveyears-ruby-full)}
-#folder=lilly-full/fiveyears-ruby-full
+folder=${1?Error: no dir given (ie zizi-data/results/lilly-full/fiveyears-ruby-full)}
 
-
+song="$((basename $folder) | head -n1 | cut -d "-" -f1)".m4a
 name="$((basename $folder) | head -n1 | cut -d "-" -f1)"-"$(basename $(dirname $folder))"
 
 
 cp $folder/000003.png $folder/000001.png
 cp $folder/000003.png $folder/000002.png
 
-ffmpeg -y -an -i zizi-data/results/$folder/%06d.jpg -crf 10 Output/full/$name.mp4
-ffmpeg -y -an -i zizi-data/results/$folder/%06d.jpg -b 4000k -vcodec libx264 -pix_fmt yuv420p -strict -2 Output/web/$name.mp4
+ffmpeg -y -an -i $folder/%06d.png -i Output/songs/$song -map 0:v -map 1:a -c:v copy -shortest -crf 16 Output/full/$name.mp4
+ffmpeg -y -an -i $folder/%06d.png -b 4000k -vcodec libx264 -pix_fmt yuv420p -strict -2 Output/web/$name.mp4
 
 
 
