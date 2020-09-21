@@ -27,6 +27,7 @@ cd vid2vid
 
 mkdir ./zizi-local
 mkdir ./zizi-local/$dir
+mkdir ./zizi-local/checkpoints
 
 aws s3 sync s3://zizi.data/datasets/looks/$dir ./zizi-local/$dir
 
