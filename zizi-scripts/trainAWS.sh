@@ -23,7 +23,7 @@ echo $folder "training"
     --resize_or_crop scaleHeight --loadSize 850 --fineSize 850 \
     --no_first_img --n_frames_total 12 --max_t_step 4 --add_face_disc \
     --niter_fix_global 3 --niter 5 --niter_decay 5 \
-    --lr 0.0001 --max_frames_per_gpu 1 \
+    --lr 0.0001 --max_frames_per_gpu 1 --save_latest_freq 200 \
     --display_freq 100 --tf_log $conti
 
 # Luke - Full - NGF 55 NDF 35 850
