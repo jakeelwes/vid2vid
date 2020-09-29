@@ -31,7 +31,7 @@ mkdir ./zizi-local/checkpoints
 
 aws s3 sync s3://zizi.data/datasets/looks/$dir ./zizi-local/$dir
 
-echo "$(echo '*/15 * * * * aws s3 sync /home/ubuntu/vid2vid/zizi-local/checkpoints/ s3://zizi.data/checkpoints/' ; crontab -l)" | crontab -
+echo "$(echo '*/15 * * * * /usr/local/bin/aws s3 sync /home/ubuntu/vid2vid/zizi-local/checkpoints/ s3://zizi.data/checkpoints/' ; crontab -l)" | crontab -
 
 
 
