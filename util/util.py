@@ -127,7 +127,7 @@ def remove_dummy_from_tensor(tensors, remove_size=0):
 
 def save_image(image_numpy, image_path):
     image_pil = Image.fromarray(image_numpy)
-    image_pil.save(image_path)
+    image_pil.save(image_path, quality=97)
 
 def print_numpy(x, val=True, shp=False):
     x = x.astype(np.float64)

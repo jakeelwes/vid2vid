@@ -136,7 +136,7 @@ class Visualizer():
 #            save_path = os.path.join(image_dir, image_name)
 #            util.save_image(image_numpy, save_path)
             if 'fake_B' in label:
-            	image_name = '%s.png' % (name)
+            	image_name = '%s.jpg' % (name)
             	save_path = os.path.join(image_dir, image_name)
             	util.save_image(image_numpy, save_path)
 

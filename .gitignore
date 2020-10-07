@@ -28,3 +28,5 @@ zizi-data/checkpoints/
 *.tar
 *vgg19-dcbb9e9d.pth
 zizi-local
+zizi-data
+zizi-old-host

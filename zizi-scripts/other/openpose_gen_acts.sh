@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 folder=${1?Error: no dir given}
